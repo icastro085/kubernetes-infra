@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sample-api-deployment
+  labels:
+    app: sample-api-deployment
+spec:
+  selector:
+    matchLabels:
+      app: sample-api-pod
+  template:
+    metadata:
+      labels:
+        app: sample-api-pod
+    spec:
+      containers:
+        - name: sample-api-container
+          image: sample-api:1.0.0
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 3000
+          resources:
+            limits:
+              memory: 128Mi
+              cpu: "1"
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 50%
